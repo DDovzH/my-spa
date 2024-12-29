@@ -55,13 +55,14 @@ body.dark-mode {
 
 #gallery {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, auto);
     gap: 10px;
+    justify-content: center;
 }
 
 .gallery-image {
-    width: 100%;
-    height: auto;
+    width: 150px;
+    height: 150px;
     border: 1px solid #ddd;
     border-radius: 5px;
     transition: transform 0.2s ease;
