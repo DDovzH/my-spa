@@ -108,13 +108,19 @@ function RenderContactPage() {
                 data-callback="onSubmit"
                 data-action="submit">Send</button>
         </form>
-        <script>
-            function onSubmit(token) {
-                alert('Form successfully submitted with reCAPTCHA!');
-                document.getElementById('contact-form').submit();
-            }
-        </script>
     `;
+
+    document.getElementById('contact-form').addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        const recaptchaResponse = document.querySelector('.g-recaptcha-response').value;
+        if (!recaptchaResponse) {
+            alert('Please complete the reCAPTCHA!');
+            return;
+        }
+
+        alert('Form submitted successfully!');
+    });
 }
 
 
