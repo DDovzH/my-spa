@@ -53,6 +53,25 @@ body.dark-mode {
     border-bottom: 1px solid #ffffff;
 }
 
+#gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.gallery-image {
+    width: 100%;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    transition: transform 0.2s ease;
+    cursor: pointer;
+}
+
+.gallery-image:hover {
+    transform: scale(1.05);
+}
+
 .modal {
     position: fixed;
     top: 0;

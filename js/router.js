@@ -37,12 +37,12 @@ document.querySelector('#gallery-link').addEventListener('click', () => {
 function RenderGalleryPage() {
     document.querySelector('main').innerHTML = `
         <h1 class="title">Gallery</h1>
-        <div id="gallery">
+        <div id="gallery" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
             ${[...Array(9)].map((_, i) => `
                 <img class="gallery-image lazy" 
                      data-src="images/image${i + 1}.jpg" 
                      alt="Image ${i + 1}" 
-                     style="width: 100px; height: 100px; margin: 5px; cursor: pointer;">
+                     style="width: 100%; height: auto; cursor: pointer; border: 1px solid #ddd;">
             `).join('')}
         </div>
     `;
@@ -84,6 +84,7 @@ function RenderGalleryPage() {
         });
     });
 }
+
 
 function RenderAboutPage() {
     document.querySelector('main').innerHTML = ` 
