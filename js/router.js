@@ -94,33 +94,79 @@ function RenderAboutPage() {
 }
 
 function RenderContactPage() {
-    document.querySelector('main').innerHTML = `
-        <h1 class="title">Contact with me</h1>
-        <form id="contact-form">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-            <label for="message">Message:</label>
-            <textarea id="message" name="message" required></textarea>
-            <button id="submit-button" class="g-recaptcha"
-                data-sitekey="6LeEDqkqAAAAAAbwNGyWM0pBHPkSaSc4H4TYF0qe"
-                data-callback="onSubmit"
-                data-action="submit">Send</button>
-        </form>
-    `;
+    document.querySelector('main').innerHTML = ` 
+        <h1 class="title">Contact with me</h1> 
+        <form id="contact-form"> 
+            <label for="name">Name:</label> 
+            <input type="text" id="name" name="name" required> 
+            
+            <label for="email">Email:</label> 
+            <input type="email" id="email" name="email" required> 
+            
+            <label for="message">Message:</label> 
+            <textarea id="message" name="message" required></textarea> 
+            
+            <div id="captcha-container">
+                <label for="captcha">Enter the text below:</label>
+                <canvas id="captcha"></canvas>
+                <input type="text" id="captcha-input" name="captcha-input" required>
+            </div>
+            
+            <button type="submit">Send</button> 
+        </form>`;
+
+    generateCaptcha();
 
     document.getElementById('contact-form').addEventListener('submit', (event) => {
         event.preventDefault();
-        alert('Please wait until reCAPTCHA validation completes.');
+        if (validateForm()) {
+            alert('Form submitted successfully!');
+        } else {
+            alert('Form validation failed. Please check your input.');
+        }
     });
 }
 
+function generateCaptcha() {
+    const captchaText = Math.random().toString(36).substring(2, 8);
+    const canvas = document.getElementById('captcha');
+    const ctx = canvas.getContext('2d');
 
-function onSubmit(token) {
-    console.log('reCAPTCHA token:', token);
+    canvas.width = 200;
+    canvas.height = 50;
 
-    alert('Form successfully submitted with reCAPTCHA!');
+    ctx.font = '30px Arial';
+    ctx.fillStyle = '#000';
+    ctx.fillText(captchaText, 10, 35);
+
+    canvas.dataset.captcha = captchaText;
+}
+
+
+function validateForm() {
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const message = document.getElementById('message').value.trim();
+    const captchaInput = document.getElementById('captcha-input').value.trim();
+    const captcha = document.getElementById('captcha').dataset.captcha;
+
+    if (!name || !email || !message) {
+        alert('All fields are required.');
+        return false;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        alert('Please enter a valid email address.');
+        return false;
+    }
+
+    if (captchaInput !== captcha) {
+        alert('CAPTCHA is incorrect.');
+        return false;
+    }
+
+    return true;
 }
 
 
