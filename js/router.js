@@ -25,6 +25,7 @@ document.querySelector('#contact-link').addEventListener('click', (event) => {
 
 document.getElementById('theme-toggle').addEventListener('click', () => {
     document.body.classList.toggle('dark-mode');
+    generateCaptcha();
 });
 
 document.querySelector('#gallery-link').addEventListener('click', () => {
@@ -85,8 +86,6 @@ function RenderGalleryPage() {
     });
 }
 
-
-
 function RenderAboutPage() {
     document.querySelector('main').innerHTML = ` 
         <h1 class="title">About Me</h1> 
@@ -135,13 +134,13 @@ function generateCaptcha() {
     canvas.width = 200;
     canvas.height = 50;
 
+    const isDarkMode = document.body.classList.contains('dark-mode');
+    ctx.fillStyle = isDarkMode ? '#ffffff' : '#000000';
     ctx.font = '30px Arial';
-    ctx.fillStyle = '#000';
     ctx.fillText(captchaText, 10, 35);
 
     canvas.dataset.captcha = captchaText;
 }
-
 
 function validateForm() {
     const name = document.getElementById('name').value.trim();
@@ -168,8 +167,6 @@ function validateForm() {
 
     return true;
 }
-
-
 
 function popStateHandler() {
     let loc = window.location.href.toString().split(window.location.host)[1];
