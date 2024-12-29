@@ -25,7 +25,6 @@ document.querySelector('#contact-link').addEventListener('click', (event) => {
 
 document.getElementById('theme-toggle').addEventListener('click', () => {
     document.body.classList.toggle('dark-mode');
-    generateCaptcha();
 });
 
 document.querySelector('#gallery-link').addEventListener('click', () => {
@@ -105,67 +104,48 @@ function RenderContactPage() {
             <label for="message">Message:</label> 
             <textarea id="message" name="message" required></textarea> 
             
-            <div id="captcha-container">
-                <label for="captcha">Enter the text below:</label>
-                <canvas id="captcha"></canvas>
-                <input type="text" id="captcha-input" name="captcha-input" required>
-            </div>
+            <!-- Google reCAPTCHA -->
+            <div class="g-recaptcha" data-sitekey="6LeEDqkqAAAAAAbwNGyWM0pBHPkSaSc4H4TYF0qe"></div>
             
-            <button type="submit">Send</button> 
+            <button type="submit">Submit</button> 
         </form>`;
+    
+    const script = document.createElement('script');
+    script.src = 'https://www.google.com/recaptcha/api.js';
+    script.async = true;
+    script.defer = true;
+    document.body.appendChild(script);
 
-    generateCaptcha();
+    document.getElementById('contact-form').addEventListener('submit', handleFormSubmit);
+}
 
-    document.getElementById('contact-form').addEventListener('submit', (event) => {
-        event.preventDefault();
-        if (validateForm()) {
-            alert('Form submitted successfully!');
+async function handleFormSubmit(event) {
+    event.preventDefault();
+
+    const token = grecaptcha.getResponse();
+    if (!token) {
+        alert('Please complete the reCAPTCHA.');
+        return;
+    }
+
+    const secretKey = '6LeEDqkqAAAAAKlRkCeVdW--MMoLmNTHTg5YGQRv';
+    const verificationURL = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${token}`;
+
+    try {
+        const response = await fetch(verificationURL, { method: 'POST' });
+        const data = await response.json();
+
+        if (data.success) {
+            alert('Captcha passed! Form is valid.');
         } else {
-            alert('Form validation failed. Please check your input.');
+            alert('Captcha failed! Please try again.');
         }
-    });
-}
-
-function generateCaptcha() {
-    const captchaText = Math.random().toString(36).substring(2, 8);
-    const canvas = document.getElementById('captcha');
-    const ctx = canvas.getContext('2d');
-
-    canvas.width = 200;
-    canvas.height = 50;
-
-    const isDarkMode = document.body.classList.contains('dark-mode');
-    ctx.fillStyle = isDarkMode ? '#ffffff' : '#000000';
-    ctx.font = '30px Arial';
-    ctx.fillText(captchaText, 10, 35);
-
-    canvas.dataset.captcha = captchaText;
-}
-
-function validateForm() {
-    const name = document.getElementById('name').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const message = document.getElementById('message').value.trim();
-    const captchaInput = document.getElementById('captcha-input').value.trim();
-    const captcha = document.getElementById('captcha').dataset.captcha;
-
-    if (!name || !email || !message) {
-        alert('All fields are required.');
-        return false;
+    } catch (error) {
+        console.error('Error verifying reCAPTCHA:', error);
+        alert('Error verifying reCAPTCHA. Please try again later.');
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-        alert('Please enter a valid email address.');
-        return false;
-    }
-
-    if (captchaInput !== captcha) {
-        alert('CAPTCHA is incorrect.');
-        return false;
-    }
-
-    return true;
+    grecaptcha.reset();
 }
 
 function popStateHandler() {
