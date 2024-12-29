@@ -109,7 +109,13 @@ function RenderContactPage() {
                 data-action="submit">Send</button>
         </form>
     `;
+
+    document.getElementById('contact-form').addEventListener('submit', (event) => {
+        event.preventDefault();
+        alert('Please wait until reCAPTCHA validation completes.');
+    });
 }
+
 
 function onSubmit(token) {
     console.log('reCAPTCHA token:', token);
