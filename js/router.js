@@ -109,19 +109,14 @@ function RenderContactPage() {
                 data-action="submit">Send</button>
         </form>
     `;
-
-    document.getElementById('contact-form').addEventListener('submit', (event) => {
-        event.preventDefault();
-
-        const recaptchaResponse = document.querySelector('.g-recaptcha-response').value;
-        if (!recaptchaResponse) {
-            alert('Please complete the reCAPTCHA!');
-            return;
-        }
-
-        alert('Form submitted successfully!');
-    });
 }
+
+function onSubmit(token) {
+    console.log('reCAPTCHA token:', token);
+
+    alert('Form successfully submitted with reCAPTCHA!');
+}
+
 
 
 function popStateHandler() {
