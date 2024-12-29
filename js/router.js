@@ -94,23 +94,29 @@ function RenderAboutPage() {
 }
 
 function RenderContactPage() {
-    document.querySelector('main').innerHTML = ` 
-        <h1 class="title">Contact with me</h1> 
-        <form id="contact-form"> 
-            <label for="name">Name:</label> 
-            <input type="text" id="name" name="name" required> 
-            <label for="email">Email:</label> 
-            <input type="email" id="email" name="email" required> 
-            <label for="message">Message:</label> 
-            <textarea id="message" name="message" required></textarea> 
-            <button type="submit">Send</button> 
-        </form>`;
-
-    document.getElementById('contact-form').addEventListener('submit', (event) => {
-        event.preventDefault();
-        alert('Form submitted!');
-    });
+    document.querySelector('main').innerHTML = `
+        <h1 class="title">Contact with me</h1>
+        <form id="contact-form">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" required></textarea>
+            <button id="submit-button" class="g-recaptcha"
+                data-sitekey="6LfNDakqAAAAALjaDzAeql7UkMV8O4LDq_-mDA9B"
+                data-callback="onSubmit"
+                data-action="submit">Send</button>
+        </form>
+        <script>
+            function onSubmit(token) {
+                alert('Form successfully submitted with reCAPTCHA!');
+                document.getElementById('contact-form').submit();
+            }
+        </script>
+    `;
 }
+
 
 function popStateHandler() {
     let loc = window.location.href.toString().split(window.location.host)[1];
