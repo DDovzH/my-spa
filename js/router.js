@@ -104,7 +104,7 @@ function RenderContactPage() {
             <label for="message">Message:</label>
             <textarea id="message" name="message" required></textarea>
             <button id="submit-button" class="g-recaptcha"
-                data-sitekey="6LfNDakqAAAAALjaDzAeql7UkMV8O4LDq_-mDA9B"
+                data-sitekey="6LeEDqkqAAAAAAbwNGyWM0pBHPkSaSc4H4TYF0qe"
                 data-callback="onSubmit"
                 data-action="submit">Send</button>
         </form>
