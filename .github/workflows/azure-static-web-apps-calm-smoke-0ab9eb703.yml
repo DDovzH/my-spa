@@ -34,5 +34,5 @@ jobs:
           ###### Repository/Build Configurations ######
           app_location: "/"
           api_location: ""
-          output_location: "/"
+          output_location: "."
           ###### End of Repository/Build Configurations ######
