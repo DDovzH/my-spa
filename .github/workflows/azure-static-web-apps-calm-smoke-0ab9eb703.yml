@@ -24,20 +24,6 @@ jobs:
           submodules: true
           lfs: false
 
-      # Set up Node.js environment
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18.20.4'
-
-      # Install dependencies
-      - name: Install Dependencies
-        run: npm install
-
-      # Build the application
-      - name: Build Application
-        run: npm run build
-
       # Deploy to Azure Static Web Apps
       - name: Build And Deploy
         id: builddeploy
@@ -49,8 +35,7 @@ jobs:
           # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
           app_location: "/"
           api_location: ""
-          output_location: "build"
-          github_id_token: ${{ steps.idtoken.outputs.result }}
+          output_location: "/"
           ###### End of Repository/Build Configurations ######
 
   close_pull_request_job:
